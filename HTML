@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Market Mapping Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0073b1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005983;
+        }
+
+        .output {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .output a {
+            color: #0073b1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .output a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LinkedIn Search Tool</h1>
+        <form id="searchForm">
+            <label for="jobTitle">Job Title:</label>
+            <input type="text" id="jobTitle" placeholder="e.g., Data Scientist">
+
+            <label for="organization">Organization:</label>
+            <input type="text" id="organization" placeholder="e.g., Google">
+
+            <label for="keywords">Keywords (use AND/OR):</label>
+            <input type="text" id="keywords" placeholder="e.g., Machine Learning OR AI">
+
+            <button type="button" onclick="generateSearch()">Generate Search</button>
+        </form>
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        function generateSearch() {
+            const jobTitle = document.getElementById("jobTitle").value;
+            const organization = document.getElementById("organization").value;
+            const keywords = document.getElementById("keywords").value;
+
+            let queryParts = [];
+
+            // Add LinkedIn site filter
+            queryParts.push("site:linkedin.com/in");
+
+            // Add job title
+            if (jobTitle) {
+                queryParts.push(`"${jobTitle}"`);
+            }
+
+            // Add organization
+            if (organization) {
+                queryParts.push(`"${organization}"`);
+            }
+
+            // Add keywords with OR logic
+            if (keywords) {
+                const formattedKeywords = keywords.replace(/AND/g, "").replace(/OR/g, "|");
+                queryParts.push(`(${formattedKeywords})`);
+            }
+
+            // Combine query
+            const query = queryParts.join(" ");
+            const searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(query);
+
+            // Display the link to the user
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = `<p><a href="${searchUrl}" target="_blank">Click here to view search results</a></p>`;
+        }
+    </script>
+</body>
+</html>
